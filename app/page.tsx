@@ -170,6 +170,7 @@ export default function Home() {
       <nav className="topbar" aria-label="页面导航">
         <a className="brand" href="#top"><span>✦</span> Transformer 一图懂</a>
         <div className="nav-links">
+          <a href="/learn">全部专题</a>
           <a href="#architecture">架构地图</a>
           <a href="#attention">注意力实验</a>
           <a href="#training">数据集</a>
