@@ -18,12 +18,12 @@ export default function GanPage() {
       { label: "分布逼近", title: "Distribution matching", summary: "最终目标不是复制训练图片，而是学到它们的分布。", detail: "理想平衡下，生成分布 p_g 与真实分布 p_data 一致，判别器对任何样本都只能输出 0.5。有限数据、有限网络和不稳定优化会让现实偏离这个理想，因此需要结构、损失和正则化技巧。", input: "反复交替训练", output: "p_g ≈ p_data" },
     ]}
     concepts={[
-      { term: "生成器 Generator", plain: "负责从随机种子制造样本。", deep: "它通过判别器的梯度间接学习真实分布；条件生成时优化 p(x|c)，无条件生成时优化 p(x)。", formula: "x̂ = Gθ(z)" },
-      { term: "判别器 Discriminator", plain: "判断输入像真还是像假。", deep: "它提供一个会随训练变化的损失面。判别器太弱，反馈没用；太强，经典损失可能让生成器梯度接近 0。", formula: "Dφ(x) ∈ [0, 1]" },
-      { term: "极小极大博弈", plain: "D 想把真假分开，G 想让假样本被当成真。", deep: "这是两名玩家的动态优化，不是固定目标上的普通最小化。一个模型更新后，另一个模型面对的目标也变了。", formula: "min_G max_D E[log D(x)] + E[log(1-D(G(z)))]" },
+      { term: "生成器 Generator", plain: "负责从随机种子制造样本。", deep: "它通过判别器的梯度间接学习真实分布；条件生成时优化 p(x|c)，无条件生成时优化 p(x)。", formula: "\\hat{x} = G_{\\theta}(z)" },
+      { term: "判别器 Discriminator", plain: "判断输入像真还是像假。", deep: "它提供一个会随训练变化的损失面。判别器太弱，反馈没用；太强，经典损失可能让生成器梯度接近 0。", formula: "D_{\\phi}(x) \\in [0, 1]" },
+      { term: "极小极大博弈", plain: "D 想把真假分开，G 想让假样本被当成真。", deep: "这是两名玩家的动态优化，不是固定目标上的普通最小化。一个模型更新后，另一个模型面对的目标也变了。", formula: "\\min_G \\max_D \\mathbb{E}_{x\\sim p_{\\mathrm{data}}}[\\log D(x)] + \\mathbb{E}_{z\\sim p(z)}[\\log(1-D(G(z)))]" },
       { term: "潜在空间 Latent space", plain: "生成结果背后的压缩坐标系。", deep: "相近的 z 常映射为相似样本；插值、属性方向和风格混合都利用这一几何结构，但可解释性不是自动保证的。" },
       { term: "Mode Collapse", plain: "生成器只会少数几种答案，却能暂时骗过 D。", deep: "它忽略真实分布的部分模态。例如人脸 GAN 反复生成相似面孔。根因与博弈动力学、损失和容量不平衡有关。" },
-      { term: "Wasserstein 距离", plain: "用更平滑的方式衡量真假分布有多远。", deep: "WGAN 用 critic 近似 Earth Mover 距离，并要求 1-Lipschitz；WGAN-GP 用梯度惩罚比权重裁剪更稳定。", formula: "L_GP = λ(‖∇x̂ D(x̂)‖₂ - 1)²" },
+      { term: "Wasserstein 距离", plain: "用更平滑的方式衡量真假分布有多远。", deep: "WGAN 用 critic 近似 Earth Mover 距离，并要求 1-Lipschitz；WGAN-GP 用梯度惩罚比权重裁剪更稳定。", formula: "L_{\\mathrm{GP}} = \\lambda(\\lVert \\nabla_{\\hat{x}} D(\\hat{x}) \\rVert_2 - 1)^2" },
     ]}
     phases={[
       { name: "训练 D：真实样本", goal: "真实判为真", action: "采样真实批次 x，让 D(x) 升高。", signal: "−log D(x)" },

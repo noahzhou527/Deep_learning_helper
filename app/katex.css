@@ -1,0 +1,22 @@
+.math-formula {
+  display: block;
+  margin-top: 15px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  border: 1px solid #cbc5ba;
+  border-radius: 8px;
+  color: #111827;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: inset 0 1px 0 #ffffff, 0 4px 12px #1118270c;
+}
+
+.math-formula .katex,
+.math-formula .katex .mord,
+.math-formula .katex .mbin,
+.math-formula .katex .mrel {
+  color: #111827;
+  font-size: 1.04em;
+}
+
+.math-formula .katex-display { margin: 0; }

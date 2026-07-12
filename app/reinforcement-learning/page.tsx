@@ -18,10 +18,10 @@ export default function ReinforcementLearningPage() {
       { label: "更新并再探索", title: "Learning update", summary: "用预测误差或策略梯度调整行为，然后继续采样。", detail: "Value-based 方法最小化 TD error；policy gradient 直接提高带来高回报动作的概率；actor–critic 同时训练策略 actor 与价值 critic。新策略又会改变未来收集到的数据分布。", input: "经验 (s,a,r,s′)", output: "更新后的策略或价值函数" },
     ]}
     concepts={[
-      { term: "MDP", plain: "强化学习问题的基本数学框架。", deep: "马尔可夫决策过程由状态 S、动作 A、转移 P、奖励 R 和折扣 γ 构成；马尔可夫性指未来在给定当前状态后与更早历史独立。", formula: "MDP = (S, A, P, R, γ)" },
-      { term: "Return", plain: "从现在开始，未来奖励加起来有多少。", deep: "折扣让无限时域总和有限，也表达对远期奖励的不确定或偏好。episodic 任务也可在终止状态停止求和。", formula: "Gₜ = rₜ₊₁ + γrₜ₊₂ + γ²rₜ₊₃ + …" },
-      { term: "Value / Q-value", plain: "长期来看，一个状态或动作有多值得。", deep: "Vπ 对策略动作取期望；Qπ 保留动作维度，因而可直接用 argmax 选动作。它们都依赖当前策略 π。", formula: "Qπ(s,a)=Eπ[Gₜ | sₜ=s,aₜ=a]" },
-      { term: "Bellman Equation", plain: "长期价值 = 眼前奖励 + 下一步的长期价值。", deep: "它把难以直接估计的长轨迹递归拆成一步目标，是动态规划、Q-learning 和 TD 学习的核心。", formula: "Q*(s,a)=E[r+γ maxₐ′Q*(s′,a′)]" },
+      { term: "MDP", plain: "强化学习问题的基本数学框架。", deep: "马尔可夫决策过程由状态 S、动作 A、转移 P、奖励 R 和折扣 γ 构成；马尔可夫性指未来在给定当前状态后与更早历史独立。", formula: "\\mathcal{M} = (\\mathcal{S}, \\mathcal{A}, P, R, \\gamma)" },
+      { term: "Return", plain: "从现在开始，未来奖励加起来有多少。", deep: "折扣让无限时域总和有限，也表达对远期奖励的不确定或偏好。episodic 任务也可在终止状态停止求和。", formula: "G_t = r_{t+1} + \\gamma r_{t+2} + \\gamma^2 r_{t+3} + \\cdots" },
+      { term: "Value / Q-value", plain: "长期来看，一个状态或动作有多值得。", deep: "Vπ 对策略动作取期望；Qπ 保留动作维度，因而可直接用 argmax 选动作。它们都依赖当前策略 π。", formula: "Q^{\\pi}(s,a) = \\mathbb{E}_{\\pi}[G_t \\mid s_t=s, a_t=a]" },
+      { term: "Bellman Equation", plain: "长期价值 = 眼前奖励 + 下一步的长期价值。", deep: "它把难以直接估计的长轨迹递归拆成一步目标，是动态规划、Q-learning 和 TD 学习的核心。", formula: "Q^*(s,a) = \\mathbb{E}[r + \\gamma \\max_{a'} Q^*(s',a')]" },
       { term: "Exploration vs Exploitation", plain: "探索新动作，还是利用当前最优动作。", deep: "只利用会错过更优策略，只探索又无法稳定获益。ε-greedy、熵奖励、UCB 和内在动机是常见机制。" },
       { term: "On-policy / Off-policy", plain: "学习的数据是否来自当前正在优化的策略。", deep: "PPO 是 on-policy，数据新鲜但样本利用率低；DQN、SAC 是 off-policy，可从 replay buffer 重用旧经验，但要处理分布偏移。" },
     ]}

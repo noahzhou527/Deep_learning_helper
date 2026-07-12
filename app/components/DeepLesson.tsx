@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import katex from "katex";
+import "katex/dist/katex.min.css";
 
 export type LessonStep = {
   label: string;
@@ -49,6 +51,11 @@ const topics = [
   { href: "/bert", label: "BERT" },
   { href: "/reinforcement-learning", label: "强化学习" },
 ];
+
+function Formula({ expression }: { expression: string }) {
+  const html = katex.renderToString(expression, { displayMode: true, throwOnError: false, strict: "ignore" });
+  return <div className="math-formula" aria-label={expression} dangerouslySetInnerHTML={{ __html: html }} />;
+}
 
 export default function DeepLesson(props: LessonProps) {
   const [activeStep, setActiveStep] = useState(0);
@@ -103,7 +110,7 @@ export default function DeepLesson(props: LessonProps) {
           <p>“白话解释”帮你建立直觉，“深入一层”告诉你模型实际在优化什么。</p>
         </div>
         <div className="concept-grid">
-          {props.concepts.map((concept, index) => <article key={concept.term} className="concept-card"><div className="concept-number">{String(index + 1).padStart(2, "0")}</div><h3>{concept.term}</h3><p className="concept-plain">{concept.plain}</p><div className="concept-deep"><span>深入一层</span><p>{concept.deep}</p></div>{concept.formula && <code>{concept.formula}</code>}</article>)}
+          {props.concepts.map((concept, index) => <article key={concept.term} className="concept-card"><div className="concept-number">{String(index + 1).padStart(2, "0")}</div><h3>{concept.term}</h3><p className="concept-plain">{concept.plain}</p><div className="concept-deep"><span>深入一层</span><p>{concept.deep}</p></div>{concept.formula && <Formula expression={concept.formula} />}</article>)}
         </div>
       </section>
 

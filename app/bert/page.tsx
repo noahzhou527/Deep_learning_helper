@@ -19,7 +19,7 @@ export default function BertPage() {
     ]}
     concepts={[
       { term: "Bidirectional", plain: "一个词能同时看左边和右边。", deep: "这使 BERT 能利用完整句子消歧，但也意味着它不能像 GPT 一样用同一训练方式自然地逐词生成。" },
-      { term: "Masked Language Model", plain: "隐藏少量词，再让模型猜回来。", deep: "它是去噪式目标，只在被选位置产生直接监督，因此每批次有效预测位比自回归模型少，但每次预测拥有双向上下文。", formula: "L_MLM = −Σᵢ∈M log P(xᵢ | x\\M)" },
+      { term: "Masked Language Model", plain: "隐藏少量词，再让模型猜回来。", deep: "它是去噪式目标，只在被选位置产生直接监督，因此每批次有效预测位比自回归模型少，但每次预测拥有双向上下文。", formula: "\\mathcal{L}_{\\mathrm{MLM}} = -\\sum_{i\\in M} \\log P(x_i \\mid x_{\\setminus M})" },
       { term: "[CLS] 表示", plain: "放在句首的专用“整句摘要位”。", deep: "它通过多层注意力汇集其他 Token 信息。预训练中的 NSP 与后续分类微调鼓励其成为句级表示，但平均池化有时更适合语义相似度。" },
       { term: "Segment Embedding", plain: "告诉模型 Token 属于句子 A 还是句子 B。", deep: "用于问答、蕴含等句对任务。单句通常全设为 A；RoBERTa 等后续模型弱化或移除了部分原始设计。" },
       { term: "NSP", plain: "判断两句话在原文中是否相邻。", deep: "原始 BERT 用 Next Sentence Prediction 学句间关系；后续研究发现其构造方式未必最优，RoBERTa 删除 NSP 仍能提升性能。" },

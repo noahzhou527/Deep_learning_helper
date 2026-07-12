@@ -19,11 +19,11 @@ export default function GptPage() {
     ]}
     concepts={[
       { term: "Decoder-only", plain: "只使用 Transformer 的解码器式模块。", deep: "没有独立 Encoder 和 Cross-Attention；提示词与已生成答案放在同一序列中，通过因果自注意力连接。" },
-      { term: "Next-token prediction", plain: "给左边所有内容，猜紧接着出现什么。", deep: "序列联合概率按链式法则分解，因此一个看似简单的局部任务可以学习语法、事实、风格和一定的推理模式。", formula: "P(x₁:T)=∏ₜ P(xₜ | x<ₜ)" },
-      { term: "Cross-entropy loss", plain: "正确 Token 概率越低，惩罚越大。", deep: "训练对所有非 padding 位置求平均负对数概率。困惑度 perplexity = exp(loss)，可理解为平均还在多少候选间犹豫。", formula: "L = −Σₜ log Pθ(xₜ | x<ₜ)" },
+      { term: "Next-token prediction", plain: "给左边所有内容，猜紧接着出现什么。", deep: "序列联合概率按链式法则分解，因此一个看似简单的局部任务可以学习语法、事实、风格和一定的推理模式。", formula: "P(x_{1:T}) = \\prod_{t=1}^{T} P(x_t \\mid x_{<t})" },
+      { term: "Cross-entropy loss", plain: "正确 Token 概率越低，惩罚越大。", deep: "训练对所有非 padding 位置求平均负对数概率。困惑度 perplexity = exp(loss)，可理解为平均还在多少候选间犹豫。", formula: "\\mathcal{L} = -\\sum_{t=1}^{T} \\log P_{\\theta}(x_t \\mid x_{<t})" },
       { term: "Context window", plain: "一次能放进模型“工作记忆”的 Token 上限。", deep: "上下文不是模型参数中的长期知识；超出窗口的信息会被截断或压缩。更长窗口还会增加 attention 与 KV cache 成本。" },
       { term: "KV Cache", plain: "把之前算过的注意力 Key/Value 留下来复用。", deep: "它显著减少逐 Token 解码的重复计算，但显存占用随层数、序列长度、KV 头数和维度线性增长。" },
-      { term: "Temperature / Top-p", plain: "控制输出更稳还是更多样。", deep: "temperature 缩放 logits；top-p 只在累计概率达到 p 的最小候选集合中采样。它们改变选择策略，不会让模型获得新知识。", formula: "Pᵢ = softmax(logitᵢ / T)" },
+      { term: "Temperature / Top-p", plain: "控制输出更稳还是更多样。", deep: "temperature 缩放 logits；top-p 只在累计概率达到 p 的最小候选集合中采样。它们改变选择策略，不会让模型获得新知识。", formula: "P_i = \\operatorname{softmax}(\\ell_i / T)" },
     ]}
     phases={[
       { name: "预训练", goal: "学习通用语言分布", action: "在大规模语料上预测下一个 Token。", signal: "Cross-entropy loss" },
