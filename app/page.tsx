@@ -1,5 +1,6 @@
 import { AttentionLab } from "./AttentionLab";
 import { Latex } from "./components/Latex";
+import { RouteCard } from "./RouteCard";
 
 const networkCards = [
   {
@@ -74,22 +75,10 @@ export default function Home() {
             <a className="text-link" href="/learn">进入完整知识地图 →</a>
           </div>
         </div>
-        <aside className="route-card" aria-label="本页复习路线">
-          <div className="route-head">
-            <span>本页路线</span>
-            <strong>约 25 MIN</strong>
-          </div>
-          <ol>
-            <li><b>01</b><div><strong>共同地基</strong><span>线性层 · 激活 · 反向传播</span></div></li>
-            <li><b>02</b><div><strong>四类网络</strong><span>FNN · CNN · RNN · Transformer</span></div></li>
-            <li className="active"><b>03</b><div><strong>手算 Attention</strong><span>QKV · score · α · context</span></div></li>
-            <li><b>04</b><div><strong>组装 Block</strong><span>Multi-head · Residual · LN · FFN</span></div></li>
-          </ol>
-          <p className="route-note">不是从零入门，而是把熟悉的名词重新接回计算图。</p>
-        </aside>
+        <RouteCard />
       </section>
 
-      <section className="foundation strip">
+      <section className="foundation strip" id="foundation">
         <div><span>共同地基</span><Latex expression="z=Wx+b" /></div>
         <i>→</i><div><span>非线性</span><Latex expression="a=\\sigma(z)" /></div>
         <i>→</i><div><span>损失</span><Latex expression="\\mathcal L(\\hat y,y)" /></div>
@@ -132,7 +121,7 @@ export default function Home() {
         <AttentionLab />
       </section>
 
-      <section className="section block-section">
+      <section className="section block-section" id="block">
         <header className="section-heading">
           <div><p className="kicker">03 — ASSEMBLE</p><h2>把 Attention 装回 Transformer Block</h2></div>
           <p>注意力只是一个子层。真正稳定训练深层 Transformer，还需要残差、归一化和逐位置 FFN。</p>

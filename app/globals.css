@@ -47,13 +47,19 @@ code { font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; }
 .route-head { display: flex; justify-content: space-between; color: #cdd4df; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
 .route-head strong { color: var(--green); font-family: monospace; }
 .route-card ol { list-style: none; padding: 16px 0 0; margin: 0; }
-.route-card li { display: flex; gap: 15px; padding: 16px 8px; border-top: 1px solid #354158; }
-.route-card li b { color: #7f8ba2; font: 700 12px/1 monospace; padding-top: 4px; }
-.route-card li div { display: flex; flex-direction: column; gap: 6px; }
+.route-card li { border-top: 1px solid #354158; }
+.route-card li button { width: 100%; display: grid; grid-template-columns: 27px 1fr 16px; gap: 10px; align-items: start; padding: 16px 8px; border: 0; color: inherit; background: transparent; cursor: pointer; text-align: left; transition: background .2s, transform .2s; }
+.route-card li button:hover, .route-card li button:focus-visible { background: #1b2a44; outline: 2px solid var(--green); outline-offset: -2px; }
+.route-card li button > b { color: #7f8ba2; font: 700 12px/1 monospace; padding-top: 4px; }
+.route-card li button > span { display: flex; flex-direction: column; gap: 6px; }
 .route-card li strong { font-size: 16px; }
-.route-card li span { color: #9eabbd; font: 12px/1.4 monospace; }
-.route-card li.active { margin-inline: -12px; padding-inline: 20px; background: var(--purple); border: 0; }
-.route-card li.active b, .route-card li.active span { color: white; }
+.route-card li small { color: #9eabbd; font: 12px/1.4 monospace; }
+.route-card li i { padding-top: 3px; color: var(--green); font-style: normal; opacity: 0; transform: translate(-4px, 4px); transition: opacity .2s, transform .2s; }
+.route-card li.active { margin-inline: -12px; background: var(--purple); border: 0; }
+.route-card li.active button { padding-inline: 20px; }
+.route-card li.active button > b, .route-card li.active small { color: white; }
+.route-card li.active i { opacity: 1; transform: translate(0); }
+.route-card li.active + li { border-top-color: transparent; }
 .route-note { margin: 12px 0 0; color: #b5bfce; font-size: 12px; line-height: 1.65; }
 
 .strip { border-block: 1px solid var(--navy); }
