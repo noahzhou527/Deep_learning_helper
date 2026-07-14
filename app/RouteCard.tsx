@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const routeSteps = [
   { id: "foundation", number: "01", title: "共同地基", detail: "线性层 · 激活 · 反向传播" },
@@ -10,27 +10,7 @@ const routeSteps = [
 ];
 
 export function RouteCard() {
-  const [activeId, setActiveId] = useState("attention");
-
-  useEffect(() => {
-    const sections = routeSteps
-      .map(({ id }) => document.getElementById(id))
-      .filter((section): section is HTMLElement => section !== null);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (visible) setActiveId(visible.target.id);
-      },
-      { rootMargin: "-24% 0px -58%", threshold: [0.1, 0.35, 0.6] },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
+  const [activeId, setActiveId] = useState("foundation");
 
   function goToStep(id: string) {
     setActiveId(id);
@@ -62,7 +42,7 @@ export function RouteCard() {
           );
         })}
       </ol>
-      <p className="route-note">点击步骤跳转；阅读时会自动标记你正在学习的部分。</p>
+      <p className="route-note">点击步骤跳转，高亮会保留在你刚刚选择的学习环节。</p>
     </aside>
   );
 }
