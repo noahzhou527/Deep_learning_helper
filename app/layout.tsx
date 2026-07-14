@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import "katex/dist/katex.min.css";
 import "./globals.css";
+import "./map.css";
 import "./lesson.css";
 import "./katex.css";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const headerList = await headers();
-  const host = headerList.get("host") ?? "localhost:3000";
-  const protocol = host.startsWith("localhost") ? "http" : "https";
-  const title = "Transformer 一图懂｜从 Token 到注意力";
-  const description = "面向初学者的交互式 Transformer 概念地图：Token、注意力、多头注意力、全连接层与训练验证测试集。";
-
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const image = `${protocol}://${host}/og.png`;
+  const title = "Neural Notes｜神经网络与 Transformer 复习";
+  const description = "从 FNN、CNN、RNN 到 Transformer，逐步手算 QKV、注意力权重 α 与上下文向量。";
   return {
-    metadataBase: new URL(`${protocol}://${host}`),
     title,
     description,
-    openGraph: { title, description, images: [{ url: "/og.png", width: 1664, height: 936, alt: "Transformer 一图懂" }] },
-    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
-    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    openGraph: { title, description, type: "website", images: [{ url: image, width: 1200, height: 630, alt: "Neural Notes Transformer 复习版" }] },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
 

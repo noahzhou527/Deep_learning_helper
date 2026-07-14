@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import katex from "katex";
-import "katex/dist/katex.min.css";
 
 export type LessonStep = {
   label: string;
@@ -45,7 +44,8 @@ export type LessonProps = {
 };
 
 const topics = [
-  { href: "/", label: "Transformer" },
+  { href: "/", label: "精细复习" },
+  { href: "/transformer-map", label: "Transformer" },
   { href: "/gan", label: "GAN" },
   { href: "/gpt", label: "GPT" },
   { href: "/bert", label: "BERT" },
