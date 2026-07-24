@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const journey = [
@@ -74,6 +75,29 @@ const dataSets = {
     text: "在模型和所有设置都确定后才评估。它代表真正没见过的新题，最能说明模型能否举一反三。",
   },
 };
+
+const trainingParams = [
+  {
+    term: "Batch size",
+    label: "一次看多少样本",
+    text: "模型不会一次把全部训练集塞进显存，而是每次取一小批样本计算平均损失。batch 越大通常越快，但占用显存也越多。",
+  },
+  {
+    term: "Step / iteration",
+    label: "更新一次参数",
+    text: "模型读完一个 batch、反向传播并更新一次权重，就完成 1 个 step。它是最小的训练推进单位。",
+  },
+  {
+    term: "Epoch",
+    label: "完整看完一遍训练集",
+    text: "当所有训练样本都被模型看过一次，就完成 1 个 epoch。一个 epoch 通常包含多个 step。",
+  },
+  {
+    term: "Global step",
+    label: "从训练开始累计的步数",
+    text: "把所有 epoch 的 step 连续编号：第 1 个 epoch 结束后不会归零。它常用于记录日志、调整学习率和保存 checkpoint。",
+  },
+];
 
 const blueprintModules = [
   {
@@ -170,13 +194,19 @@ export default function Home() {
       <nav className="topbar" aria-label="页面导航">
         <a className="brand" href="#top"><span>✦</span> Transformer 一图懂</a>
         <div className="nav-links">
-          <a href="/">精细复习</a>
-          <a href="/learn">全部专题</a>
-          <a href="#architecture">架构地图</a>
-          <a href="#attention">注意力实验</a>
-          <a href="#training">数据集</a>
+          <div className="nav-group nav-global" aria-label="其他页面">
+            <span className="nav-label">切换专题</span>
+            <Link href="/">精细复习</Link>
+            <Link href="/learn">全部专题</Link>
+          </div>
+          <span className="nav-divider" aria-hidden="true" />
+          <div className="nav-group nav-local" aria-label="当前页面">
+            <span className="nav-label">本页</span>
+            <a href="#architecture">架构</a>
+            <a href="#attention">实验</a>
+            <a href="#training-params">训练参数</a>
+          </div>
         </div>
-        <a className="nav-cta" href="#try">从一句话开始 <span>↓</span></a>
       </nav>
 
       <section className="hero" id="top">
@@ -347,6 +377,15 @@ export default function Home() {
           </div>
           <div className="dataset-detail"><div><span className={`dataset-badge ${dataset}`}>{selectedDataset.percent}</span><h3>{selectedDataset.label} · {selectedDataset.title}</h3></div><p>{selectedDataset.text}</p></div>
           <div className="exam-flow"><span>大量样本</span><i>→</i><span>训练并调整</span><i>→</i><span>验证设置</span><i>→</i><span>最后测试</span></div>
+        </div>
+      </section>
+
+      <section className="section training-params-section" id="training-params">
+        <div className="params-heading"><span>TRAINING LOOP · 训练参数</span><h2>训练过程，<br />到底在数什么？</h2><p>把训练拆成几个清楚的计数单位：1000 个样本、batch size = 100 时，1 个 epoch 就包含 10 个 step。</p></div>
+        <div className="training-params-panel">
+          <div className="params-flow"><span>1000 个训练样本</span><i>→</i><span>每批 100 个</span><i>→</i><span>10 次参数更新</span><i>→</i><b>1 个 epoch</b></div>
+          <div className="params-grid">{trainingParams.map((item) => <article key={item.term}><strong>{item.term}</strong><span>{item.label}</span><p>{item.text}</p></article>)}</div>
+          <div className="params-note"><b>两个常见配套参数：</b>学习率（learning rate）决定每次更新迈多大步；loss 是模型当前答错得有多严重，训练通常希望它逐渐下降。</div>
         </div>
       </section>
 

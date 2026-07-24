@@ -43,8 +43,6 @@ export function AttentionLab() {
     return { Q, K, V, raw, scaled, alpha, context };
   }, [query]);
 
-  const matrix = step === 0 ? result.Q : step === 1 ? result.raw.map((n) => [n]) : step === 2 ? result.scaled.map((n) => [n]) : step === 3 ? result.alpha.map((n) => [n]) : result.V;
-
   return (
     <div className="lab-shell">
       <div className="lab-controls">
