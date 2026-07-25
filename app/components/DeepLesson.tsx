@@ -44,12 +44,12 @@ export type LessonProps = {
 };
 
 const topics = [
-  { href: "/", label: "精细复习" },
   { href: "/transformer-map", label: "Transformer" },
   { href: "/gan", label: "GAN" },
   { href: "/gpt", label: "GPT" },
   { href: "/bert", label: "BERT" },
   { href: "/reinforcement-learning", label: "强化学习" },
+  { href: "/review", label: "进阶 AI 架构" },
 ];
 
 function Formula({ expression }: { expression: string }) {
@@ -64,11 +64,20 @@ export default function DeepLesson(props: LessonProps) {
   return (
     <main className={`lesson-page lesson-${props.accent}`}>
       <header className="lesson-nav">
-        <Link href="/learn" className="lesson-brand"><span>✦</span> AI 架构实验室</Link>
-        <nav aria-label="专题导航">
-          {topics.map((topic) => <Link key={topic.href} href={topic.href} className={topic.href === `/${props.slug}` ? "active" : ""}>{topic.label}</Link>)}
+        <Link href="/" className="lesson-brand"><span>✦</span> AI 架构实验室</Link>
+        <nav className="lesson-nav-links" aria-label="页面导航">
+          <div className="lesson-nav-group lesson-nav-local" aria-label="本页导航">
+            <span className="lesson-nav-label">本页</span>
+            <a href="#pipeline">数据流</a>
+            <a href="#concepts">核心概念</a>
+            <a href="#training">训练循环</a>
+          </div>
+          <i className="lesson-nav-divider" aria-hidden="true" />
+          <div className="lesson-nav-group lesson-nav-global" aria-label="课程导航">
+            <span className="lesson-nav-label">课程</span>
+            <Link href="/">全部专题 <b aria-hidden="true">↗</b></Link>
+          </div>
         </nav>
-        <Link href="/learn" className="lesson-index-link">全部专题 →</Link>
       </header>
 
       <section className="lesson-hero">
@@ -104,7 +113,7 @@ export default function DeepLesson(props: LessonProps) {
         </div>
       </section>
 
-      <section className="lesson-section concept-section">
+      <section className="lesson-section concept-section" id="concepts">
         <div className="lesson-heading">
           <div><span>02 · 核心零件</span><h2>每个术语，先用白话懂，<br />再往计算里走一步。</h2></div>
           <p>“白话解释”帮你建立直觉，“深入一层”告诉你模型实际在优化什么。</p>
@@ -114,7 +123,7 @@ export default function DeepLesson(props: LessonProps) {
         </div>
       </section>
 
-      <section className="lesson-section training-loop-section">
+      <section className="lesson-section training-loop-section" id="training">
         <div className="lesson-heading light-heading">
           <div><span>03 · 怎样学会</span><h2>一次训练循环，<br />究竟在调整什么？</h2></div>
           <p>模型学习不是突然“理解”，而是重复预测、获得反馈、计算误差、更新参数。</p>
@@ -141,7 +150,7 @@ export default function DeepLesson(props: LessonProps) {
       </section>
 
       <section className="next-topics"><span>继续探索</span><h2>把几种架构放在一起看，<br />你会更快抓住它们的差别。</h2><div>{topics.filter((topic) => topic.href !== `/${props.slug}`).map((topic) => <Link key={topic.href} href={topic.href}>{topic.label}<span>→</span></Link>)}</div></section>
-      <footer className="lesson-footer"><Link href="/learn">AI 架构实验室</Link><p>{props.label} 深度可视化教程</p><a href="#top">回到顶部 ↑</a></footer>
+      <footer className="lesson-footer"><Link href="/">AI 架构实验室</Link><p>{props.label} 深度可视化教程</p><a href="#top">回到顶部 ↑</a></footer>
     </main>
   );
 }

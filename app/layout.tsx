@@ -11,12 +11,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const image = `${protocol}://${host}/og.png`;
-  const title = "Neural Notes｜神经网络与 Transformer 复习";
-  const description = "从 FNN、CNN、RNN 到 Transformer，逐步手算 QKV、注意力权重 α 与上下文向量。";
+  const title = "AI 架构实验室｜从 Transformer 到进阶架构";
+  const description = "从 Transformer 出发，理解生成、语言理解、强化学习与跨架构的共同计算视角。";
   return {
     title,
     description,
-    openGraph: { title, description, type: "website", images: [{ url: image, width: 1200, height: 630, alt: "Neural Notes Transformer 复习版" }] },
+    openGraph: { title, description, type: "website", images: [{ url: image, width: 1200, height: 630, alt: "AI 架构实验室学习地图" }] },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }

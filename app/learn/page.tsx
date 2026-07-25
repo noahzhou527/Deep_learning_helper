@@ -6,15 +6,14 @@ const courses = [
   { href: "/gpt", code: "03", name: "GPT", tag: "Decoder-only LLM", text: "从下一个 Token 预测走到预训练、对齐和逐词生成。", color: "violet" },
   { href: "/bert", code: "04", name: "BERT", tag: "双向语言理解", text: "理解掩码语言模型、[CLS] 表示与下游微调。", color: "cyan" },
   { href: "/reinforcement-learning", code: "05", name: "强化学习", tag: "从奖励中学习行动", text: "沿 Agent–Environment 循环理解策略、价值与探索。", color: "lime" },
-  { href: "/", code: "06", name: "Neural Notes", tag: "公式与手算复习", text: "从 FNN、CNN、RNN 走到 QKV、缩放、α 权重与 Transformer Block。", color: "violet" },
+  { href: "/review", code: "06", name: "进阶 AI 架构", tag: "结构总复盘与手算", text: "把 FNN、CNN、RNN、QKV 与 Transformer Block 串回同一套计算视角。", color: "violet" },
 ];
 
 export default function LearnPage() {
   return <main className="course-hub">
-    <header className="lesson-nav"><Link href="/learn" className="lesson-brand"><span>✦</span> AI 架构实验室</Link><nav><Link href="/">精细复习</Link><Link href="/transformer-map">Transformer</Link><Link href="/gan">GAN</Link><Link href="/gpt">GPT</Link><Link href="/bert">BERT</Link><Link href="/reinforcement-learning">强化学习</Link></nav></header>
-    <section className="hub-hero"><span>从结构出发，理解 AI</span><h1>别背术语。<br />沿着数据流，<em>看懂模型。</em></h1><p>五个独立专题，把核心架构、训练机制、常见误区和模型差异拆成可点击的视觉教程。</p></section>
-    <section className="course-grid">{courses.map((course) => <Link href={course.href} key={course.name} className={`course-card course-${course.color}`}><div><span>{course.code}</span><small>{course.tag}</small></div><h2>{course.name}</h2><p>{course.text}</p><b><span>进入专题</span><i aria-hidden="true">→</i></b></Link>)}</section>
-    <section className="hub-map"><div><span>推荐顺序</span><h2>先建立共同语言，<br />再看架构的分叉。</h2></div><div className="hub-map-flow"><span>Transformer</span><i>→</i><span>GPT / BERT</span><i>→</i><span>GAN / 强化学习</span></div></section>
-    <footer className="lesson-footer"><Link href="/learn">AI 架构实验室</Link><p>面向初学者的可视化深度学习教程</p></footer>
+    <header className="lesson-nav"><Link href="/" className="lesson-brand"><span>✦</span> AI 架构实验室</Link></header>
+    <section className="hub-hero"><span>从结构出发，理解 AI</span><h1>别背术语。<br />沿着数据流，<em>看懂模型。</em></h1><p>六个按顺序展开的专题，从 Transformer 出发，经过生成、理解与决策，最后完成跨架构的综合判断。</p></section>
+    <section className="course-grid" id="courses">{courses.map((course) => <Link href={course.href} key={course.name} className={`course-card course-${course.color}`}><div><span>{course.code}</span><small>{course.tag}</small></div><h2>{course.name}</h2><p>{course.text}</p><b><span>进入专题</span><i aria-hidden="true">→</i></b></Link>)}</section>
+    <footer className="lesson-footer"><Link href="/">AI 架构实验室</Link><p>面向初学者的可视化深度学习教程</p></footer>
   </main>;
 }

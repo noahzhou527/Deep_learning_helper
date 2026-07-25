@@ -3,14 +3,15 @@
 import { useState } from "react";
 
 const routeSteps = [
-  { id: "foundation", number: "01", title: "共同地基", detail: "线性层 · 激活 · 反向传播" },
-  { id: "map", number: "02", title: "四类网络", detail: "FNN · CNN · RNN · Transformer" },
-  { id: "attention", number: "03", title: "手算 Attention", detail: "QKV · score · α · context" },
-  { id: "block", number: "04", title: "组装 Block", detail: "Multi-head · Residual · LN · FFN" },
+  { id: "map", number: "01", title: "四类网络", detail: "FNN · CNN · RNN · Transformer" },
+  { id: "attention", number: "02", title: "手算 Attention", detail: "QKV · score · α · context" },
+  { id: "block", number: "03", title: "组装 Block", detail: "Multi-head · Residual · LN · FFN" },
+  { id: "compare", number: "04", title: "结构对比", detail: "连接 · 共享 · 并行 · 归纳偏置" },
+  { id: "advance", number: "05", title: "综合判断", detail: "连接 · 假设 · 反馈 · 迁移" },
 ];
 
 export function RouteCard() {
-  const [activeId, setActiveId] = useState("foundation");
+  const [activeId, setActiveId] = useState("map");
 
   function goToStep(id: string) {
     setActiveId(id);

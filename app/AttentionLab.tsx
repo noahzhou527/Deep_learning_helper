@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Latex } from "./components/Latex";
 
 const TOKENS = ["猫", "坐", "在", "垫子上"];
 const X = [[1, 0.5], [0.2, 1], [0.4, 0.8], [0.8, 0.2]];
@@ -32,6 +31,11 @@ const steps = [
 export function AttentionLab() {
   const [query, setQuery] = useState(0);
   const [step, setStep] = useState(4);
+  const shapeLabel = step === 0
+    ? "Q, K, V ∈ ℝ⁴×²"
+    : step < 4
+      ? "scores ∈ ℝ¹×⁴"
+      : "context ∈ ℝ¹×²";
   const result = useMemo(() => {
     const Q = multiply(X, WQ);
     const K = multiply(X, WK);
@@ -78,11 +82,11 @@ export function AttentionLab() {
             <div><p className="lab-label">STEP {step + 1} / 5</p><h3>{steps[step].label}</h3></div>
             <span className="query-chip">当前 q：{TOKENS[query]}</span>
           </div>
-          {step === 0 && <div className="explanation"><Latex expression="Q=XW^Q,\\quad K=XW^K,\\quad V=XW^V" block className="explanation-formula" /><p>同一个输入 X 经过三套可学习线性投影。Q 表示“我在找什么”，K 表示“我能被怎样匹配”，V 是最终被加权汇总的内容。</p></div>}
-          {step === 1 && <div className="explanation"><Latex expression="s_{ij}=q_i k_j^{\\mathsf T}" block className="explanation-formula" /><p>固定 q<sub>{query + 1}</sub>，依次与每个 key 做内积。方向越一致，分数越高；此时分数还不是概率。</p></div>}
-          {step === 2 && <div className="explanation"><Latex expression="z_{ij}=\\frac{s_{ij}}{\\sqrt{d_k}}=\\frac{s_{ij}}{\\sqrt 2}" block className="explanation-formula" /><p>d<sub>k</sub> 较大时，内积方差会随维度增大，softmax 容易饱和。除以 √d<sub>k</sub> 把数值尺度拉回稳定范围。</p></div>}
-          {step === 3 && <div className="explanation"><Latex expression="\\alpha_{ij}=\\frac{\\exp(z_{ij})}{\\sum_m\\exp(z_{im})}" block className="explanation-formula" /><p>softmax 沿 key 维度归一化，所以每个 query 对所有 key 的 α 之和为 1。α 就是注意力权重，不是独立训练的参数。</p></div>}
-          {step === 4 && <div className="explanation"><Latex expression="\\operatorname{context}_i=\\sum_j\\alpha_{ij}v_j" block className="explanation-formula" /><p>用 α 对所有 value 做加权和。输出不再只代表“{TOKENS[query]}”本身，而是融入了整句中与它相关的信息。</p></div>}
+          {step === 0 && <div className="explanation"><div className="explanation-formula plain-formula">Q = XW<sup>Q</sup><i>·</i>K = XW<sup>K</sup><i>·</i>V = XW<sup>V</sup></div><p>同一个输入 X 经过三套可学习线性投影。Q 表示“我在找什么”，K 表示“我能被怎样匹配”，V 是最终被加权汇总的内容。</p></div>}
+          {step === 1 && <div className="explanation"><div className="explanation-formula plain-formula">s<sub>ij</sub> = q<sub>i</sub> k<sub>j</sub><sup>T</sup></div><p>固定 q<sub>{query + 1}</sub>，依次与每个 key 做内积。方向越一致，分数越高；此时分数还不是概率。</p></div>}
+          {step === 2 && <div className="explanation"><div className="explanation-formula plain-formula">z<sub>ij</sub> = s<sub>ij</sub> / √d<sub>k</sub> = s<sub>ij</sub> / √2</div><p>d<sub>k</sub> 较大时，内积方差会随维度增大，softmax 容易饱和。除以 √d<sub>k</sub> 把数值尺度拉回稳定范围。</p></div>}
+          {step === 3 && <div className="explanation"><div className="explanation-formula plain-formula">α<sub>ij</sub> = exp(z<sub>ij</sub>) / Σ<sub>m</sub> exp(z<sub>im</sub>)</div><p>softmax 沿 key 维度归一化，所以每个 query 对所有 key 的 α 之和为 1。α 就是注意力权重，不是独立训练的参数。</p></div>}
+          {step === 4 && <div className="explanation"><div className="explanation-formula plain-formula">context<sub>i</sub> = Σ<sub>j</sub> α<sub>ij</sub>v<sub>j</sub></div><p>用 α 对所有 value 做加权和。输出不再只代表“{TOKENS[query]}”本身，而是融入了整句中与它相关的信息。</p></div>}
 
           <div className="live-equation">
             {step === 0 && <><Matrix title="Q" values={result.Q} rowLabels={TOKENS} /><Matrix title="K" values={result.K} rowLabels={TOKENS} /><Matrix title="V" values={result.V} rowLabels={TOKENS} /></>}
@@ -91,7 +95,7 @@ export function AttentionLab() {
           </div>
           <div className="calc-footer">
             <button disabled={step === 0} onClick={() => setStep(step - 1)}>← 上一步</button>
-            <div className="shape-note">张量形状：<code>{step === 0 ? "Q,K,V ∈ ℝ⁴ˣ²" : step < 4 ? "scores ∈ ℝ¹ˣ⁴" : "context ∈ ℝ¹ˣ²"}</code></div>
+            <div className="shape-note"><span>张量形状</span><span className="shape-formula">{shapeLabel}</span></div>
             <button disabled={step === 4} onClick={() => setStep(step + 1)}>下一步 →</button>
           </div>
         </section>

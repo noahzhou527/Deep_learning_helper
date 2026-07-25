@@ -194,17 +194,16 @@ export default function Home() {
       <nav className="topbar" aria-label="页面导航">
         <a className="brand" href="#top"><span>✦</span> Transformer 一图懂</a>
         <div className="nav-links">
-          <div className="nav-group nav-global" aria-label="其他页面">
-            <span className="nav-label">切换专题</span>
-            <Link href="/">精细复习</Link>
-            <Link href="/learn">全部专题</Link>
-          </div>
-          <span className="nav-divider" aria-hidden="true" />
           <div className="nav-group nav-local" aria-label="当前页面">
             <span className="nav-label">本页</span>
             <a href="#architecture">架构</a>
             <a href="#attention">实验</a>
             <a href="#training-params">训练参数</a>
+          </div>
+          <span className="nav-divider" aria-hidden="true" />
+          <div className="nav-group nav-global" aria-label="课程导航">
+            <span className="nav-label">课程</span>
+            <Link href="/">全部专题 ↗</Link>
           </div>
         </div>
       </nav>
