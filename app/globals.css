@@ -287,3 +287,44 @@ main p, main li, main td, main th { text-wrap: pretty; overflow-wrap: anywhere; 
 .network-card p, .detail-grid p, th, td, footer p { font-size: 14px; line-height: 1.72; }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+/* Review page keeps its visual identity with less empty space and wider cards. */
+.review-page .hero { min-height: 0; padding-block: 54px; gap: 48px; }
+.review-page .hero h1 { font-size: clamp(40px, 4.8vw, 68px); line-height: 1.16; }
+.review-page .section, .review-page .attention-section,
+.review-page .compare-section, .review-page .advanced-section { padding-block: 72px; }
+.review-page .section-heading { gap: 28px; margin-bottom: 30px; }
+.review-page .section-heading h2 { font-size: clamp(30px, 3.1vw, 44px); line-height: 1.25; }
+.review-page .network-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; border: 0; background: transparent; }
+.review-page .network-card { min-height: 350px; padding: 28px; border: 1px solid #d6d0c5; border-radius: 16px; }
+.review-page .card-title { margin-top: 20px; }
+.review-page .mini-flow { margin-block: 24px 18px; }
+.review-page .network-card p, .review-page .detail-grid p,
+.review-page .advanced-grid p, .review-page .explanation p { font-size: 16px; line-height: 1.8; }
+.review-page .tag-row span, .review-page .mini-flow > span { font-size: 12px; }
+.review-page .lab-shell { border-radius: 16px; overflow: hidden; }
+.review-page .lab-controls, .review-page .lab-content { grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr); }
+.review-page .calculation-panel { min-height: 480px; }
+.review-page .weights-grid { gap: 14px; grid-template-columns: minmax(0, 1fr); }
+.review-page .matrix-block { max-width: 100%; overflow-x: auto; }
+.review-page .live-equation { gap: 20px; flex-wrap: wrap; }
+.review-page .context-calc { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.review-page .detail-grid { gap: 20px; margin-top: 30px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.review-page .detail-grid article { min-width: 0; border-radius: 14px; }
+.review-page .formula { font-size: 14px; border-radius: 8px; }
+.review-page :is(button, a):focus-visible { outline: 3px solid var(--purple); outline-offset: 4px; }
+@media (max-width: 1000px) {
+  .review-page .hero, .review-page .lab-controls, .review-page .lab-content,
+  .review-page .detail-grid { grid-template-columns: minmax(0, 1fr); }
+  .review-page .given-panel { border-right: 0; border-bottom: 1px solid #4d586e; }
+  .review-page .control-group + .control-group { border-left: 0; }
+  .review-page .weights-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .review-page .network-grid, .review-page .weights-grid { grid-template-columns: minmax(0, 1fr); }
+  .review-page .section, .review-page .attention-section,
+  .review-page .compare-section, .review-page .advanced-section { padding-block: 48px; }
+  .review-page .network-card { min-height: 0; padding: 24px; }
+  .review-page .hero { padding-block: 36px; }
+  .review-page .lab-shell { margin-inline: 0; border: 1px solid #4d586e; }
+}

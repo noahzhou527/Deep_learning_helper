@@ -47,7 +47,7 @@ const networkCards = [
 
 export default function Home() {
   return (
-    <main>
+    <main className="review-page">
       <nav className="topbar" aria-label="主导航">
         <a className="brand" href="#top" aria-label="深度学习复习站首页">
           <span className="brand-dot" />

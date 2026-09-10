@@ -44,3 +44,62 @@ p, small, .journey-step, .blueprint-tabs button { text-wrap: pretty; overflow-wr
   .recap h2 br, .deep-heading h2 br { display: none; }
 }
 }
+
+/* Transformer workbenches share one reading scale and flexible card columns. */
+.study-map .hero { min-height: 0; padding-block: 54px; gap: 36px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.study-map .hero h1 { line-height: 1.18; }
+.study-map .section, .study-map .recap { padding-block: 72px; }
+.study-map .section-heading h2, .study-map .deep-heading h2,
+.study-map .tokenizer-panel h2, .study-map .attention-title h2,
+.study-map .ffn-copy h2, .study-map .training-intro h2, .study-map .recap h2 { font-size: clamp(30px, 3.1vw, 44px); line-height: 1.25; letter-spacing: -.035em; }
+.study-map .journey-grid { grid-template-columns: minmax(210px, .65fr) minmax(0, 1.75fr); gap: 24px; margin-top: 30px; }
+.study-map .step-card, .study-map .token-lab, .study-map .dataset-console,
+.study-map .training-params-panel, .study-map .blueprint-detail { min-width: 0; padding: 28px; }
+.study-map .step-card h3, .study-map .blueprint-detail h3 { font-size: 27px; line-height: 1.35; }
+.study-map .journey-step, .study-map .head-tab, .study-map .blueprint-tabs button,
+.study-map .arch-block b { font-size: 14px; line-height: 1.5; }
+.study-map .head-tab { min-height: 48px; }
+.study-map .head-view { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; padding: 28px 16px 16px; }
+.study-map .head-bars { display: grid; gap: 18px; height: auto; padding: 24px; border: 1px solid #e4dfd6; border-radius: 14px; background: #f7f5ef; }
+.study-map .head-bars > div { display: grid; grid-template-columns: 2.5em minmax(0, 1fr) 3em; grid-template-rows: auto; align-items: center; justify-items: stretch; gap: 14px; font-size: 14px; color: #41516a; }
+.study-map .head-bars > div > i { width: 100%; height: 14px; border-radius: 6px; background: #e4e8e4; }
+.study-map .head-bars b { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7560df, #35bacb); transition: width .25s ease; }
+.study-map .head-bars small { font-size: 14px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.study-map .attention-bars { display: grid; gap: 18px; height: auto; padding: 24px; border: 1px solid #e4dfd6; border-radius: 14px; background: #f7f5ef; }
+.study-map .attention-bars > div { display: grid; grid-template-columns: 2.5em minmax(0, 1fr) 3em; align-items: center; gap: 14px; font-size: 14px; color: #41516a; }
+.study-map .attention-bars > div > i { display: block; width: 100%; height: 14px; overflow: hidden; border-radius: 6px; background: #e4e8e4; }
+.study-map .attention-bars b { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7560df, #35bacb); transition: width .25s ease; }
+.study-map .attention-bars small { font-size: 14px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.study-map .tokenizer-section, .study-map .ffn-section,
+.study-map .training-section, .study-map .training-params-section { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 36px; }
+.study-map .attention-lab { grid-template-columns: 140px 24px minmax(0, 1fr) 180px; gap: 16px; }
+.study-map .deep-notes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.study-map .deep-notes article { padding: 24px; }
+.study-map .params-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.study-map .params-grid article { padding: 18px; }
+.study-map :is(.step-card, .tokenizer-panel, .head-view-copy, .ffn-copy, .training-intro, .blueprint-detail, .deep-notes, .dataset-detail, .params-heading, .params-grid, .recap-list) p { font-size: 16px; line-height: 1.8; }
+.study-map .params-grid strong, .study-map .takeaway b, .study-map .qkv-guide p { font-size: 14px; line-height: 1.65; }
+.study-map .params-grid span, .study-map .params-note, .study-map .arch-block small { font-size: 12px; line-height: 1.65; }
+.study-map :is(button, a):focus-visible { outline: 3px solid #9272ff; outline-offset: 4px; }
+@media (max-width: 1100px) {
+  .study-map .attention-lab { grid-template-columns: minmax(0, 1fr); }
+  .study-map .query-card, .study-map .value-card { min-height: 0; }
+  .study-map .attention-links { display: none; }
+}
+@media (max-width: 850px) {
+  .study-map .hero, .study-map .journey-grid, .study-map .tokenizer-section,
+  .study-map .ffn-section, .study-map .training-section, .study-map .training-params-section,
+  .study-map .head-view, .study-map .deep-notes { grid-template-columns: minmax(0, 1fr); }
+  .study-map .section, .study-map .recap { padding-block: 48px; }
+  .study-map .hero { padding-block: 36px; }
+  .study-map .attention-bars { padding: 20px; }
+}
+@media (max-width: 500px) {
+  .study-map .params-grid { grid-template-columns: minmax(0, 1fr); }
+  .study-map .step-card, .study-map .token-lab, .study-map .dataset-console,
+  .study-map .training-params-panel, .study-map .blueprint-detail { padding: 20px; }
+  .study-map .head-view { padding-inline: 4px; }
+  .study-map .attention-bars { padding: 16px; }
+  .study-map .attention-bars > div { gap: 10px; }
+  .study-map .weight-row { grid-template-columns: 89px minmax(0, 1fr) 35px; }
+}

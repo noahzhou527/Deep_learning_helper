@@ -62,7 +62,7 @@ export default function DeepLesson(props: LessonProps) {
   const current = props.steps[activeStep];
 
   return (
-    <main className={`lesson-page lesson-${props.accent}`}>
+    <main className={`lesson-page lesson-${props.accent}`} id="top">
       <header className="lesson-nav">
         <Link href="/" className="lesson-brand"><span>✦</span> AI 架构实验室</Link>
         <nav className="lesson-nav-links" aria-label="页面导航">
@@ -133,7 +133,7 @@ export default function DeepLesson(props: LessonProps) {
         </div>
       </section>
 
-      <section className="lesson-section compare-section">
+      <section className="lesson-section lesson-compare-section">
         <div className="comparison-panel">
           <span className="panel-kicker">04 · 放进知识地图</span><h2>它与其他架构<br />有什么本质区别？</h2>
           <div className="comparison-list">{props.comparisons.map((item) => <article key={item.title}><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>

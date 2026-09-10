@@ -358,7 +358,7 @@ export default function Home() {
           </div>
           <div className="head-view">
             <div className="head-view-copy"><span className={`color-tag ${currentHead.color}`}>并行视角 {head + 1}</span><h3>{currentHead.sentence}</h3><p>同一句话，经由不同参数的注意力头，会得出不同的“谁更重要”。这不是人工指定的，而是模型从训练数据里学到的。</p><div className="combine-note">4 个头的结果 <b>拼接 + 混合</b> → 送给下一层</div></div>
-            <div className="head-bars">{tokenSamples.map((word, index) => <div key={word}><span>{word}</span><i><b style={{ height: `${currentHead.weights[index] * 100}%` }} /></i><small>{Math.round(currentHead.weights[index] * 100)}%</small></div>)}</div>
+            <div className="attention-bars" role="img" aria-label={tokenSamples.map((word, index) => `${word} ${Math.round(currentHead.weights[index] * 100)}%`).join("，")}>{tokenSamples.map((word, index) => <div key={word}><span>{word}</span><i aria-hidden="true"><b style={{ width: `${currentHead.weights[index] * 100}%` }} /></i><small>{Math.round(currentHead.weights[index] * 100)}%</small></div>)}</div>
           </div>
         </div>
       </section>
