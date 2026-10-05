@@ -9,9 +9,12 @@ const origin = process.env.PREVIEW_URL ?? "http://localhost:5174";
 const routes = ["/", "/learn", "/gan", "/gpt", "/bert", "/reinforcement-learning", "/review", "/transformer-map"];
 const failures = [];
 let checks = 0;
+// Inherit startup output so a Windows browser daemon cannot keep a captured
+// stdout pipe open and block spawnSync after the launcher exits.
+assert.equal(spawnSync(binary, ["--session", "contrast-audit", "open", origin], { stdio: "inherit", timeout: 30_000 }).status, 0);
 
 function run(...args) {
-  const result = spawnSync(binary, ["--session", "contrast-audit", ...args, "--json"], { encoding: "utf8", maxBuffer: 4 * 1024 * 1024 });
+  const result = spawnSync(binary, ["--session", "contrast-audit", ...args, "--json"], { encoding: "utf8", maxBuffer: 4 * 1024 * 1024, timeout: 30_000 });
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const response = JSON.parse(result.stdout);
   assert.equal(response.success, true, response.error);
@@ -60,6 +63,7 @@ for (const width of [1440, 390]) {
         }
       }
     }
+    console.log(`Checked ${width}px ${mode}: ${failures.length} contrast failures so far.`);
   }
 }
 mkdirSync("outputs", { recursive: true });
