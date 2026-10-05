@@ -12,16 +12,16 @@ async function render(path = "/") {
   );
 }
 
-test("server-renders the neural network review page", async () => {
+test("server-renders the course index", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
-  assert.match(html, /Neural Notes/);
-  assert.match(html, /Self-Attention/);
-  assert.match(html, /FNN/);
-  assert.match(html, /CNN/);
-  assert.match(html, /RNN/);
+  assert.match(html, /AI 架构实验室/);
+  assert.match(html, /学习专题/);
+  assert.match(html, /GAN/);
+  assert.match(html, /GPT/);
+  assert.match(html, /BERT/);
   assert.match(html, /Transformer/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
@@ -34,6 +34,7 @@ test("server-renders every merged learning route", async () => {
     ["/gpt", /Next-token/],
     ["/bert", /Masked Language Model/],
     ["/reinforcement-learning", /Bellman/],
+    ["/review", /FNN/],
   ];
 
   for (const [path, expected] of routes) {

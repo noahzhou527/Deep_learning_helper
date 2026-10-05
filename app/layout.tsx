@@ -5,6 +5,7 @@ import "./globals.css";
 import "./map.css";
 import "./lesson.css";
 import "./katex.css";
+import "./theme.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();

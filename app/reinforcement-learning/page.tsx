@@ -24,6 +24,7 @@ export default function ReinforcementLearningPage() {
       { term: "Bellman Equation", plain: "长期价值 = 眼前奖励 + 下一步的长期价值。", deep: "它把难以直接估计的长轨迹递归拆成一步目标，是动态规划、Q-learning 和 TD 学习的核心。", formula: "Q^*(s,a) = \\mathbb{E}[r + \\gamma \\max_{a'} Q^*(s',a')]" },
       { term: "Exploration vs Exploitation", plain: "探索新动作，还是利用当前最优动作。", deep: "只利用会错过更优策略，只探索又无法稳定获益。ε-greedy、熵奖励、UCB 和内在动机是常见机制。" },
       { term: "On-policy / Off-policy", plain: "学习的数据是否来自当前正在优化的策略。", deep: "PPO 是 on-policy，数据新鲜但样本利用率低；DQN、SAC 是 off-policy，可从 replay buffer 重用旧经验，但要处理分布偏移。" },
+      { term: "Credit Assignment", plain: "最后得到奖励时，要判断之前哪些动作真正有贡献。", deep: "奖励延迟越长，因果归因越困难。TD learning 用 bootstrap 逐步传播价值，eligibility trace 与 GAE 在偏差和方差间折中；错误归因会强化碰巧发生的动作。" },
     ]}
     phases={[
       { name: "采样轨迹", goal: "获得与环境互动经验", action: "用当前策略运行若干步或完整 episode。", signal: "(s,a,r,s′,done)" },
@@ -36,17 +37,20 @@ export default function ReinforcementLearningPage() {
       { title: "Value-based vs Policy-based", text: "DQN 等先学 Q 再取最大动作，适合离散动作；策略梯度直接优化 π，适合连续动作和随机策略。" },
       { title: "Actor–Critic", text: "Actor 决定怎么做，Critic 评估做得如何。Critic 降低策略梯度方差，Actor 让价值学习能用于复杂动作空间。" },
       { title: "RLHF 与普通 RL", text: "RLHF 的环境通常是提示词与语言模型，奖励来自人类偏好训练出的奖励模型；PPO/DPO 等用于让回答更符合偏好。" },
+      { title: "Model-free vs Model-based", text: "Model-free 直接从经验学习策略或价值，省去环境建模但样本需求大；Model-based 学习或使用转移模型进行规划，样本效率更高，却会受模型误差累积影响。" },
     ]}
     pitfalls={[
       { title: "奖励高不等于真正完成目标", text: "Agent 会优化写下来的奖励，而不是设计者心里的意图，可能钻漏洞。", fix: "奖励审计、多指标约束、人类反馈和红队测试" },
       { title: "训练曲线方差很大", text: "轨迹随机、策略不断变化，同一配置不同随机种子可能结果差异显著。", fix: "多随机种子、置信区间、稳定基线与标准化评测" },
       { title: "离线数据不能随便当在线经验", text: "数据没覆盖的动作上，Q 网络可能产生过高的外推估计。", fix: "保守离线 RL、行为约束或重新收集在线数据" },
+      { title: "平均回报会掩盖危险失败", text: "少数灾难性轨迹可能被大量普通成功抵消，尤其在安全关键任务中，均值并不足够。", fix: "同时报告分位数、最坏情况、失败类型与约束违反率" },
     ]}
     questions={[
       { question: "奖励和价值有什么区别？", answer: "奖励 r 是环境在某一步立即给出的标量；价值 V/Q 是 Agent 对未来累计奖励的预测。一个动作眼前奖励低，但若通向更好未来，价值仍可能很高。" },
       { question: "Q-learning 为什么是 off-policy？", answer: "它的目标使用 maxₐ′Q(s′,a′)，学习贪心最优策略，即使数据由 ε-greedy、旧策略或其他行为策略收集。因此行为策略与目标策略可以不同。" },
       { question: "为什么策略梯度要乘 Advantage？", answer: "Advantage 表示某动作比该状态下的平均选择好多少。正优势提高动作概率，负优势降低；减去 V(s) 作为 baseline 不改变期望梯度，却显著降低方差。" },
       { question: "PPO 的核心直觉是什么？", answer: "新策略应该朝更高回报方向移动，但一次别走太远。PPO 用概率比率裁剪限制更新，减少策略突然崩坏，同时保持实现简单。" },
+      { question: "为什么强化学习通常比监督学习更需要样本？", answer: "监督学习的数据和标签已经给定；RL 必须先用当前策略探索才能获得训练数据，奖励还可能稀疏或延迟。策略更新又会改变数据分布，许多旧经验不能无条件复用，因此有效监督信号更昂贵。" },
     ]}
   />;
 }

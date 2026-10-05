@@ -24,6 +24,7 @@ export default function GanPage() {
       { term: "潜在空间 Latent space", plain: "生成结果背后的压缩坐标系。", deep: "相近的 z 常映射为相似样本；插值、属性方向和风格混合都利用这一几何结构，但可解释性不是自动保证的。" },
       { term: "Mode Collapse", plain: "生成器只会少数几种答案，却能暂时骗过 D。", deep: "它忽略真实分布的部分模态。例如人脸 GAN 反复生成相似面孔。根因与博弈动力学、损失和容量不平衡有关。" },
       { term: "Wasserstein 距离", plain: "用更平滑的方式衡量真假分布有多远。", deep: "WGAN 用 critic 近似 Earth Mover 距离，并要求 1-Lipschitz；WGAN-GP 用梯度惩罚比权重裁剪更稳定。", formula: "L_{\\mathrm{GP}} = \\lambda(\\lVert \\nabla_{\\hat{x}} D(\\hat{x}) \\rVert_2 - 1)^2" },
+      { term: "Conditional GAN", plain: "给生成器一个明确条件，让它按类别、文字或属性生成。", deep: "G 与 D 都接收条件 c，学习 p(x|c) 而非混合的 p(x)。条件可通过拼接、条件归一化或 Cross-Attention 注入；条件一致性仍需单独评估。", formula: "\\hat{x} = G(z,c)" },
     ]}
     phases={[
       { name: "训练 D：真实样本", goal: "真实判为真", action: "采样真实批次 x，让 D(x) 升高。", signal: "−log D(x)" },
@@ -35,16 +36,19 @@ export default function GanPage() {
       { title: "GAN vs VAE", text: "VAE 明确优化重建与概率下界，潜在空间通常更规整；GAN 常生成更锐利的样本，但没有直接的似然值且训练更不稳定。" },
       { title: "GAN vs Diffusion", text: "GAN 一次前向传播就能生成，速度快；扩散模型通过多步去噪生成，训练通常更稳、覆盖更好，但采样计算更大。" },
       { title: "GAN vs GPT", text: "GAN 学真实与生成样本的整体分布对抗；GPT 把序列概率拆成逐 Token 条件概率，并用最大似然训练。" },
+      { title: "GAN vs Normalizing Flow", text: "Flow 使用可逆变换获得精确似然和双向映射，但结构受可逆性约束；GAN 不要求可逆，也不直接给似然，通常更自由地追求感知质量。" },
     ]}
     pitfalls={[
       { title: "损失下降不等于图片变好", text: "双方目标同时变化，GAN 损失不像普通监督学习那样容易解释。", fix: "结合样本可视化、FID、precision/recall 与过拟合检查" },
       { title: "判别器越强不一定越好", text: "D 完美区分后，经典 GAN 的生成器可能拿不到有效梯度。", fix: "控制更新比、标签平滑、谱归一化或改用 WGAN-GP" },
       { title: "生成结果多不等于覆盖真实分布", text: "模型可能在视觉上多样，却仍遗漏重要模态。", fix: "同时评估质量 precision 与覆盖 recall" },
+      { title: "FID 低不代表单张样本都可靠", text: "FID 比较特征分布的均值与协方差，会受样本量、特征网络和数据预处理影响，也不能直接发现特定失败案例。", fix: "固定评测流程，并结合人工检查、precision/recall 与最近邻分析" },
     ]}
     questions={[
       { question: "生成器为什么不直接和真实图片比较像素误差？", answer: "像素误差要求一个生成样本对应唯一标准答案，但无条件生成有无数合理答案。判别器学习一个数据驱动的相似性标准，让 G 对齐整个分布，而不是复刻某一张图。" },
       { question: "为什么要交替训练，不能同时一步更新？", answer: "双方的目标依赖对方当前状态。先固定一方更新另一方，可以得到清晰的梯度目标；完全同步容易造成梯度互相干扰，甚至让博弈绕圈或发散。" },
       { question: "GAN 训练到最后，判别器是不是没用了？", answer: "部署时通常只保留生成器；但训练平衡时 D≈0.5 不是判别器失效，而是 p_g 已接近 p_data，真假在分布层面无法区分。" },
+      { question: "怎样判断生成器是在学习分布，还是在记住训练图片？", answer: "可把生成样本与训练集做最近邻检索，检查是否近乎复制；同时比较训练集与独立测试集上的判别表现，并观察潜在空间插值是否平滑。单看图片逼真或 FID 都不足以排除记忆。" },
     ]}
   />;
 }

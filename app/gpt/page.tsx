@@ -24,6 +24,7 @@ export default function GptPage() {
       { term: "Context window", plain: "一次能放进模型“工作记忆”的 Token 上限。", deep: "上下文不是模型参数中的长期知识；超出窗口的信息会被截断或压缩。更长窗口还会增加 attention 与 KV cache 成本。" },
       { term: "KV Cache", plain: "把之前算过的注意力 Key/Value 留下来复用。", deep: "它显著减少逐 Token 解码的重复计算，但显存占用随层数、序列长度、KV 头数和维度线性增长。" },
       { term: "Temperature / Top-p", plain: "控制输出更稳还是更多样。", deep: "temperature 缩放 logits；top-p 只在累计概率达到 p 的最小候选集合中采样。它们改变选择策略，不会让模型获得新知识。", formula: "P_i = \\operatorname{softmax}(\\ell_i / T)" },
+      { term: "Prompt / Context Learning", plain: "不更新参数，也能从当前提示里的规则和示例临时调整行为。", deep: "模型把指令、示例与待解决问题一起当作上下文继续预测。少样本示例可以帮助它识别输出格式和任务映射，但这种适应只存在于当前上下文中，不等同于微调。" },
     ]}
     phases={[
       { name: "预训练", goal: "学习通用语言分布", action: "在大规模语料上预测下一个 Token。", signal: "Cross-entropy loss" },
@@ -35,16 +36,19 @@ export default function GptPage() {
       { title: "GPT vs 原始 Transformer", text: "原始架构有 Encoder 和 Decoder；GPT 通常只保留带因果遮罩的 Decoder block，把所有文本放进同一序列。" },
       { title: "GPT vs BERT", text: "GPT 单向看左侧并擅长生成；BERT 双向看上下文并擅长理解与表征。GPT 预测下一词，BERT 主要恢复被遮住的词。" },
       { title: "GPT vs GAN", text: "GPT 通过最大似然学习可分解的序列概率；GAN 通过判别器提供的对抗信号对齐整体数据分布。" },
+      { title: "GPT vs Encoder–Decoder", text: "GPT 把输入与输出串在同一因果序列中；T5 等 Encoder–Decoder 模型先双向编码输入，再由 Decoder 通过 Cross-Attention 生成输出，天然适合翻译、摘要等条件生成。" },
     ]}
     pitfalls={[
       { title: "流畅不等于真实", text: "目标是生成高概率文本，不是执行事实数据库查询；模型可能自信地补全错误信息。", fix: "检索增强、工具调用、引用核验与不确定性表达" },
       { title: "上下文不等于永久记忆", text: "对话内容只在当前上下文窗口内有效，且长上下文中的信息不一定被同等利用。", fix: "摘要、外部记忆、检索和结构化提示" },
       { title: "参数更多不自动等于会推理", text: "规模提升能力，但任务分解、数据质量、训练目标和推理时计算同样关键。", fix: "高质量数据、过程监督、工具使用与评测" },
+      { title: "提示写得长不等于信息更充分", text: "无关背景、冲突要求和重复示例会稀释关键约束，甚至让模型抓错重点。", fix: "明确任务、必要上下文、输出格式与验收标准，并删除无关信息" },
     ]}
     questions={[
       { question: "GPT 训练时为什么能并行，生成时却通常只能逐 Token？", answer: "训练时整段正确文本已知，因果 mask 让每个位置只读左侧，但所有位置可在矩阵中同时计算；生成时下一个 Token 尚不存在，必须先选出它才能计算再下一个。" },
       { question: "模型是在数据库里搜索下一个词吗？", answer: "不是。它用神经网络把上下文映射成词表概率，参数中存的是分布式统计模式。检索增强模型可以额外查询外部数据库，但那是独立机制。" },
       { question: "Temperature 调低会让答案更正确吗？", answer: "它只让输出更偏向最高概率候选，因此通常更稳定、可重复，但最高概率候选也可能是错的。它不能修复知识缺口或错误推理。" },
+      { question: "为什么给几个示例后，GPT 常常立刻会做新任务？", answer: "示例把任务规则和输入—输出模式写进了上下文，模型可利用注意力在当前推理过程中模仿这种映射。这叫 in-context learning；模型参数并没有因此更新，换一个上下文后这种临时适应不会自动保留。" },
     ]}
   />;
 }

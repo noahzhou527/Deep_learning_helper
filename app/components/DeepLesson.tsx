@@ -88,10 +88,10 @@ export default function DeepLesson(props: LessonProps) {
           <div className="lesson-analogy"><span>先记住这个比喻</span><b>{props.analogy}</b></div>
           <a href="#pipeline" className="lesson-start">沿数据流开始学习 <span>↓</span></a>
         </div>
-        <div className="lesson-hero-visual" aria-hidden="true">
-          <div className="visual-grid" />
-          <div className="visual-core">{props.code}</div>
-          {props.steps.slice(0, 4).map((step, index) => <div key={step.label} className={`visual-satellite satellite-${index + 1}`}><small>0{index + 1}</small>{step.label}</div>)}
+        <div className="lesson-hero-visual lesson-flow-preview" aria-label={`${props.label} 数据流预览`}>
+          <div className="lesson-preview-head"><strong>{props.code}</strong><span>数据流预览</span></div>
+          <ol>{props.steps.map((step, index) => <li key={step.label}><span>{String(index + 1).padStart(2, "0")}</span><b>{step.label}</b><i aria-hidden="true">↓</i></li>)}</ol>
+          <p>每一步，都有明确的输入与输出。</p>
         </div>
       </section>
 

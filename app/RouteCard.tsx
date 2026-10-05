@@ -15,7 +15,8 @@ export function RouteCard() {
 
   function goToStep(id: string) {
     setActiveId(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
+    document.getElementById(id)?.scrollIntoView({ behavior, block: "start" });
   }
 
   return (

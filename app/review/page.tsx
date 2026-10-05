@@ -1,4 +1,5 @@
 import { AttentionLab } from "../AttentionLab";
+import Link from "next/link";
 import { Latex } from "../components/Latex";
 import { RouteCard } from "../RouteCard";
 
@@ -65,7 +66,7 @@ export default function Home() {
           <i className="nav-separator" aria-hidden="true" />
           <div className="nav-cluster nav-cluster-global">
             <span className="nav-cluster-label">课程</span>
-            <a href="/">全部专题 <b aria-hidden="true">↗</b></a>
+            <Link href="/">全部专题 <b aria-hidden="true">↗</b></Link>
           </div>
         </div>
       </nav>
@@ -111,10 +112,10 @@ export default function Home() {
             </article>
           ))}
         </div>
-        <a className="topic-gateway" href="/">
+        <Link className="topic-gateway" href="/">
           <div><span>完整课程地图</span><h3>继续学习 Tokenizer、Encoder–Decoder、GPT、BERT、GAN 与强化学习</h3></div>
           <b>进入 AI 架构实验室 →</b>
-        </a>
+        </Link>
       </section>
 
       <section className="attention-section" id="attention">

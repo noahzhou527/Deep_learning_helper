@@ -24,6 +24,7 @@ export default function BertPage() {
       { term: "Segment Embedding", plain: "告诉模型 Token 属于句子 A 还是句子 B。", deep: "用于问答、蕴含等句对任务。单句通常全设为 A；RoBERTa 等后续模型弱化或移除了部分原始设计。" },
       { term: "NSP", plain: "判断两句话在原文中是否相邻。", deep: "原始 BERT 用 Next Sentence Prediction 学句间关系；后续研究发现其构造方式未必最优，RoBERTa 删除 NSP 仍能提升性能。" },
       { term: "Fine-tuning", plain: "用少量任务数据调整整个预训练模型。", deep: "学习率通常远小于从头训练。参数高效方法如 adapters、LoRA 可冻结大部分主干，只训练少量新增参数。" },
+      { term: "Pooling", plain: "把一串 Token 向量压成一个固定长度的句子向量。", deep: "可读取 [CLS]、对有效 Token 做 mean pooling，或训练注意力池化。选择取决于预训练目标与下游任务；没有专门对比学习时，不同 pooling 的语义距离表现可能差异很大。" },
     ]}
     phases={[
       { name: "构造预训练样本", goal: "制造可自监督的题目", action: "从无标签文本选出 MLM 位置并做 80/10/10 替换。", signal: "原文本自己提供答案" },
@@ -35,16 +36,19 @@ export default function BertPage() {
       { title: "BERT vs GPT", text: "BERT 是 Encoder-only、双向、以理解表征为主；GPT 是 Decoder-only、因果单向、以生成下一个 Token 为主。" },
       { title: "BERT vs 原始 Transformer Encoder", text: "结构核心相近；BERT 的关键贡献是大规模 MLM 预训练、特殊 Token 设计，以及把同一 Encoder 微调到多种 NLP 任务。" },
       { title: "BERT vs Sentence-BERT", text: "普通 BERT 直接比较两个 [CLS] 向量不一定适合语义检索；Sentence-BERT 用孪生结构和对比学习专门优化句向量。" },
+      { title: "BERT vs RoBERTa", text: "RoBERTa 保留 BERT 的 Encoder 主体，但使用更多数据、更长训练、动态 masking，并移除 NSP；差异主要来自预训练配方，而不是重新发明注意力结构。" },
     ]}
     pitfalls={[
       { title: "[CLS] 不一定是万能句向量", text: "分类微调中很好用，但未专门训练时，余弦相似度可能不能准确表达语义距离。", fix: "使用 Sentence-BERT、对比学习或合适的 pooling" },
       { title: "[MASK] 与真实输入存在差异", text: "下游任务不会看到 [MASK]，这产生预训练—微调不一致。", fix: "80/10/10 替换策略或 ELECTRA 等替代预训练目标" },
       { title: "双向不等于能自然生成长文本", text: "BERT 同时利用未来上下文，没有直接定义从左到右的联合概率。", fix: "生成任务采用 GPT、Encoder–Decoder 或专门迭代填空方法" },
+      { title: "Padding 也会产生表示", text: "如果 attention mask 配置错误，真实 Token 会关注填充位，池化时也可能把无意义向量平均进去。", fix: "同时检查 attention mask、loss mask 与 pooling mask" },
     ]}
     questions={[
       { question: "BERT 为什么能看右边，GPT 却不能？", answer: "两者训练目标不同。BERT 要恢复句中被遮 Token，完整上下文在题目中已给出；GPT 要模拟真实生成，预测时未来内容尚不存在，所以训练必须用因果遮罩保持一致。" },
       { question: "为什么不把所有词都 Mask 掉？", answer: "如果全部遮住，模型就没有上下文线索，只能猜词频；遮少量位置既保留可用上下文，又让原文本自动提供监督答案。" },
       { question: "微调时只训练最后一层吗？", answer: "经典 BERT 微调通常同时更新整个 BERT 和新任务头；也可以冻结主干，或使用 LoRA/adapters 等参数高效方法，只更新少量参数。" },
+      { question: "做文本检索时，为什么不能直接逐对运行普通 BERT？", answer: "Cross-Encoder 把查询和候选拼在一起，效果通常更强，但每个候选都要重新前向计算，规模大时很慢。Sentence-BERT 先独立编码并建立向量索引，可快速召回，再用 Cross-Encoder 精排。" },
     ]}
   />;
 }
