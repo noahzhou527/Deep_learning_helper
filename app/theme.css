@@ -265,7 +265,42 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .review-page .block-step.purple :is(b, span), .review-page .block-step.deep :is(b, span) { color: var(--text-secondary); }
 
 /* Workbenches are scientific diagrams with a fixed, readable contrast. */
+.study-map :is(.attention-section, .deep-architecture) {
+  --surface: #142825; --surface-raised: #1e342e; --surface-subtle: #223d35;
+  --text: #edf6f1; --text-secondary: #bdd2c6; --accent: #a5d7bd;
+  --accent-soft: #264a39; --border: #496559; --ink: #142825;
+  background: var(--surface); color: var(--text);
+}
+.study-map .qkv-guide span { color: var(--accent); }
+.study-map .qkv-guide p { color: var(--text); }
+.study-map .qkv-guide > i { color: var(--text-secondary); }
+.study-map .nav-local .nav-label, .study-map .section-heading > p { color: var(--text-secondary); }
+.study-map .section-heading > p > b, .study-map .recap .section-kicker { color: var(--accent); }
+.study-map .journey-step .step-number, .study-map .journey-step.active .step-number { color: var(--accent); }
+.study-map .journey-step:hover { background: var(--surface-subtle); }
+.study-map .journey-step.active:hover { background: var(--accent-soft); }
+.study-map .blueprint-tabs button.active small { color: #e2f1f2; }
+.study-map #full-architecture .blueprint-detail { background: var(--surface-raised); }
+.study-map :is(.token-explainer, .exam-flow) { color: var(--text-secondary); background: var(--surface-subtle); }
+.study-map :is(.token-explainer, .exam-flow) :is(span, b, i) { color: inherit; }
+.study-map :is(.token-explainer, .exam-flow) > span { background: var(--surface-raised); color: var(--text-secondary); }
+.study-map .token-chip small { opacity: 1; }
+.study-map .color-tag:is(.cyan, .violet, .orange, .lime), .study-map .ffn-copy h2 strong { color: var(--accent); }
+.study-map .activation { color: var(--text-secondary); }
+.study-map .dataset-segment.train, .study-map .dataset-segment.train.active, .study-map .dataset-badge.train { background: #35723e; color: #f4faf5; }
+.study-map .dataset-segment.validation, .study-map .dataset-segment.validation.active, .study-map .dataset-badge.validation { background: #3e5fa4; color: #f4f7ff; }
+.study-map .dataset-segment.test, .study-map .dataset-segment.test.active, .study-map .dataset-badge.test { background: #79447e; color: #fff5ff; }
+.study-map .dataset-segment :is(b, span) { color: inherit; }
+.review-page .route-card li button > b, .review-page .card-number { color: var(--text-secondary); }
+.review-page .accent-row { background: var(--accent-soft); }
+.review-page .accent-row > th { color: var(--accent); }
 .review-page .attention-section { --navy: #142825; --purple: #78c9a5; --pink: #a2dac0; --green: #b2dfc3; --purple-soft: #26463a; background: #142825; }
+.review-page .attention-section :is(.matrix-row small, .dim-note, .token-tabs small, .control-group label, .step-tabs button:not(.selected), .shape-note, .shape-note > span, .matrix-title) { color: #b7cbbf; }
+.review-page .attention-section .token-tabs button.selected small { color: #243b2c; }
+.review-page .advanced-section .section-heading.light .kicker { color: var(--accent); }
+.review-page .advanced-section .section-heading.light .section-step-line a { color: var(--text-secondary); }
+.review-page .advanced-section .section-heading.light .section-step-line a:hover { color: var(--accent); }
+.review-page .calc-footer button:disabled { color: #b7cbbf; }
 .review-page .lab-shell { background: #1a302c; border-color: #47625a; border-radius: 12px; }
 .review-page .given-panel { background: #162924; }
 .review-page .explanation { background: #253d34; }
