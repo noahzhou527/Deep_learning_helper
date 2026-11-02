@@ -1,5 +1,21 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
+import { runInNewContext } from "node:vm";
+
+test("legacy links lead to the merged private site and preserve anchors", () => {
+  const html = readFileSync(new URL("../legacy-site/index.html", import.meta.url), "utf8");
+  const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+  for (const [pathname, expected] of [["/", "/review"], ["/index.html", "/review"], ["/gpt", "/gpt"]]) {
+    let destination;
+    runInNewContext(script, {
+      URL,
+      location: { pathname, search: "?from=legacy", hash: "#attention", replace(url) { destination = url; } },
+      document: { getElementById() { return {}; } },
+    });
+    assert.equal(destination, `https://transformer-study-map.weichunzhou527.chatgpt.site${expected}?from=legacy#attention`);
+  }
+});
 
 async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);

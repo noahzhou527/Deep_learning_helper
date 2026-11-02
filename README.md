@@ -1,98 +1,29 @@
-# vinext-starter
+# AI 架构实验室
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+统一的私人深度学习网站，合并 Transformer 一图懂与 Neural Notes 神经网络复习内容。
 
-## Prerequisites
+- 主站：https://transformer-study-map.weichunzhou527.chatgpt.site
+- 源码：https://github.com/noahzhou527/Deep_learning_helper
+- `/`、`/learn`：全部学习专题
+- `/transformer-map`：Transformer 概念地图
+- `/gpt`、`/bert`、`/gan`、`/reinforcement-learning`：架构专题
+- `/review`：FNN、CNN、RNN、注意力手算与 Transformer Block 总复习
 
-- Node.js `>=22.13.0`
+旧 Neural Notes 域名仅作为跳转入口，其页面源码保存在 `legacy-site/`。原首页及锚点转到主站 `/review`，其他课程路径保持对应关系。
 
-## Quick Start
+## 本地开发
 
-```bash
-npm install
-npm run dev
-npm run build
+需要 Node.js >=22.13.0，使用已有 pnpm lockfile：
+
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm build
+node --test tests/rendered-html.test.mjs
 ```
 
-This starter does not use `wrangler.jsonc`.
+## 同步与发布
 
-## Included Shape
+`origin/main` 是 GitHub 源码仓库。Sites 主站身份保存在 `.openai/hosting.json`，发布时使用 Sites 的源码同步、打包和部署流程；部署提交同时推送 GitHub，保持同一提交。GitHub 推送本身不代表线上已部署，也未配置自动部署。
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+两个域名均保留仅所有者可访问的设置。更新主站后无需再次维护旧站课程；只有主站域名或路由变化时才需要更新跳转页面。
