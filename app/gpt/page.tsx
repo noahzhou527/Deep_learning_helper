@@ -1,9 +1,11 @@
+import { relatedCourses } from "../../config/course-links";
 import DeepLesson from "../components/DeepLesson";
 
 export const metadata = { title: "GPT 架构详解｜AI 架构实验室", description: "从 Decoder-only Transformer 到预训练、对齐与生成。" };
 
 export default function GptPage() {
   return <DeepLesson
+    relatedCourses={relatedCourses()}
     slug="gpt" code="GPT" label="生成式预训练 Transformer"
     title="不断猜下一个 Token，学会生成整段语言。"
     subtitle="GPT 是 Decoder-only Transformer。它把文本概率拆成一连串“给定左侧上下文，预测下一个 Token”的任务；从海量语料中预训练后，再通过指令微调与偏好对齐，变成能对话、写作和推理的模型。"
@@ -20,7 +22,7 @@ export default function GptPage() {
     concepts={[
       { term: "Decoder-only", plain: "只使用 Transformer 的解码器式模块。", deep: "没有独立 Encoder 和 Cross-Attention；提示词与已生成答案放在同一序列中，通过因果自注意力连接。" },
       { term: "Next-token prediction", plain: "给左边所有内容，猜紧接着出现什么。", deep: "序列联合概率按链式法则分解，因此一个看似简单的局部任务可以学习语法、事实、风格和一定的推理模式。", formula: "P(x_{1:T}) = \\prod_{t=1}^{T} P(x_t \\mid x_{<t})" },
-      { term: "Cross-entropy loss", plain: "正确 Token 概率越低，惩罚越大。", deep: "训练对所有非 padding 位置求平均负对数概率。困惑度 perplexity = exp(loss)，可理解为平均还在多少候选间犹豫。", formula: "\\mathcal{L} = -\\sum_{t=1}^{T} \\log P_{\\theta}(x_t \\mid x_{<t})" },
+      { term: "Cross-entropy loss", plain: "正确 Token 概率越低，惩罚越大。", deep: "训练对所有非 padding 位置求平均负对数概率。困惑度 perplexity = exp(loss)，可理解为平均还在多少候选间犹豫。", formula: "\\mathcal{L} = -\\frac{1}{T}\\sum_{t=1}^{T} \\log P_{\\theta}(x_t \\mid x_{<t})" },
       { term: "Context window", plain: "一次能放进模型“工作记忆”的 Token 上限。", deep: "上下文不是模型参数中的长期知识；超出窗口的信息会被截断或压缩。更长窗口还会增加 attention 与 KV cache 成本。" },
       { term: "KV Cache", plain: "把之前算过的注意力 Key/Value 留下来复用。", deep: "它显著减少逐 Token 解码的重复计算，但显存占用随层数、序列长度、KV 头数和维度线性增长。" },
       { term: "Temperature / Top-p", plain: "控制输出更稳还是更多样。", deep: "temperature 缩放 logits；top-p 只在累计概率达到 p 的最小候选集合中采样。它们改变选择策略，不会让模型获得新知识。", formula: "P_i = \\operatorname{softmax}(\\ell_i / T)" },

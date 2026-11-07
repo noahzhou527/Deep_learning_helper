@@ -1,3 +1,5 @@
+import { relatedCourses } from "../../config/course-links";
+import { CourseLinks } from "../components/CourseLinks";
 import Link from "next/link";
 
 const courses = [
@@ -23,6 +25,7 @@ export default function LearnPage() {
     </section>
     <div className="hub-catalog-heading"><h2>学习专题</h2><p>从一张结构图开始，逐步理解六种视角。</p><span>{courses.length} 个专题</span></div>
     <section className="course-grid" id="courses" aria-label="学习专题">{courses.map((course) => <Link href={course.href} key={course.name} className={`course-card course-${course.color}`}><div><span>{course.code}</span><small>{course.tag}</small></div><h2>{course.name}</h2><p>{course.text}</p><b><span>进入专题</span><i aria-hidden="true">→</i></b></Link>)}</section>
+    <CourseLinks links={relatedCourses()} />
     <footer className="lesson-footer"><Link href="/">AI 架构实验室</Link><p>面向初学者的可视化深度学习教程</p><a href="#courses">学习专题 ↑</a></footer>
   </main>;
 }

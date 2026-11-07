@@ -1,3 +1,5 @@
+import { relatedCourses } from "../../config/course-links";
+import { CourseLinks } from "../components/CourseLinks";
 import { AttentionLab } from "../AttentionLab";
 import Link from "next/link";
 import { Latex } from "../components/Latex";
@@ -129,7 +131,7 @@ export default function Home() {
       <section className="section block-section" id="block">
         <header className="section-heading">
           <div><div className="section-step-line"><p className="kicker">03 — ASSEMBLE</p><a href="#top">回到顶部 ↑</a></div><h2>把 Attention 装回 Transformer Block</h2></div>
-          <p>注意力只是一个子层。真正稳定训练深层 Transformer，还需要残差、归一化和逐位置 FFN。</p>
+          <p>本节展示原始 Transformer 的 Post-LN：先残差相加，再归一化。GPT-3 实验室采用 Pre-LN：先归一化，再进入子层；两者不要混用。</p>
         </header>
         <div className="block-flow">
           <div className="block-step sky"><b>01</b><strong>X + 位置编码</strong><span>加入顺序信息</span></div>
@@ -149,6 +151,7 @@ export default function Home() {
         </div>
       </section>
 
+      <CourseLinks links={relatedCourses()} />
       <section className="compare-section" id="compare">
         <header className="section-heading">
           <div><div className="section-step-line"><p className="kicker">04 — COMPARE</p><a href="#top">回到顶部 ↑</a></div><h2>最后，用五个问题区分它们</h2></div>

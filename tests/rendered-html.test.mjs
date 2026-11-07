@@ -59,3 +59,14 @@ test("server-renders every merged learning route", async () => {
     assert.match(await response.text(), expected, path);
   }
 });
+
+
+test("course links come from configuration on all three learning entry points", async () => {
+  const config = JSON.parse(readFileSync(new URL("../config/course-links.json", import.meta.url), "utf8"));
+  const base = `${config.llmBaseUrl.replace(/\/+$/, "")}/`;
+  for (const path of ["/", "/gpt", "/review"]) {
+    const html = await (await render(path)).text();
+    assert.ok(html.includes(new URL("gpt3.html", base).href), path);
+    assert.ok(html.includes(new URL("index.html", base).href), path);
+  }
+});

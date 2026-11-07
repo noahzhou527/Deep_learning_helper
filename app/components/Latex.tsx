@@ -1,13 +1,14 @@
 "use client";
 
+import { useMemo } from "react";
 import katex from "katex";
 
 export function Latex({ expression, block = false, className = "" }: { expression: string; block?: boolean; className?: string }) {
-  const html = katex.renderToString(expression, {
+  const html = useMemo(() => katex.renderToString(expression, {
     displayMode: block,
     throwOnError: false,
     strict: "ignore",
-  });
+  }), [expression, block]);
 
   return (
     <span

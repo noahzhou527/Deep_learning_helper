@@ -333,12 +333,12 @@ export default function Home() {
             {tokenSamples.map((token, index) => <button key={token} className={selectedToken === index ? "token-chip active" : "token-chip"} onClick={() => setSelectedToken(index)}>{token}<small>#{101 + index * 38}</small></button>)}
           </div>
           <div className="lab-result"><span className="result-icon">⌁</span><p>{tokenDescription}</p></div>
-          <p className="microcopy">不同模型的切法会不同；Token 是“模型阅读语言的基本单位”。</p>
+          <p className="microcopy">本例词块和编号为人工示意，并非真实 Tokenizer 输出。不同模型的切法会不同；Token 是“模型阅读语言的基本单位”。</p>
         </div>
       </section>
 
       <section className="section attention-section" id="attention">
-        <div className="attention-title"><span className="section-kicker">核心机制</span><h2>注意力不是“记住”，<br />而是<strong>此刻该看谁。</strong></h2><p>阅读某个 Token 时，模型会把对其他 Token 的关注程度变成分数。下面把“跑”当作正在理解的词。</p></div>
+        <div className="attention-title"><span className="section-kicker">核心机制</span><h2>注意力不是“记住”，<br />而是<strong>此刻该看谁。</strong></h2><p>阅读某个 Token 时，模型会把对其他 Token 的关注程度变成分数。下面把“跑”当作正在理解的词；百分比为人工示意，非模型计算结果。</p></div>
         <div className="attention-lab">
           <div className="query-card"><span>正在理解</span><b>跑</b><small>Query：我现在需要什么线索？</small></div>
           <div className="attention-links" aria-hidden="true"><i /><i /><i /><i /></div>
@@ -357,7 +357,7 @@ export default function Home() {
             {headViews.map((item, index) => <button key={item.name} className={head === index ? `head-tab active ${item.color}` : `head-tab ${item.color}`} onClick={() => setHead(index)}>{item.name}</button>)}
           </div>
           <div className="head-view">
-            <div className="head-view-copy"><span className={`color-tag ${currentHead.color}`}>并行视角 {head + 1}</span><h3>{currentHead.sentence}</h3><p>同一句话，经由不同参数的注意力头，会得出不同的“谁更重要”。这不是人工指定的，而是模型从训练数据里学到的。</p><div className="combine-note">4 个头的结果 <b>拼接 + 混合</b> → 送给下一层</div></div>
+            <div className="head-view-copy"><span className={`color-tag ${currentHead.color}`}>并行视角 {head + 1}</span><h3>{currentHead.sentence}</h3><p>真实模型的各头关注关系由训练形成；本图各头的百分比与语义标签均为人工示意，不代表真实模型的固定分工。</p><div className="combine-note">4 个头的结果 <b>拼接 + 混合</b> → 送给下一层</div></div>
             <div className="attention-bars" role="img" aria-label={tokenSamples.map((word, index) => `${word} ${Math.round(currentHead.weights[index] * 100)}%`).join("，")}>{tokenSamples.map((word, index) => <div key={word}><span>{word}</span><i aria-hidden="true"><b style={{ width: `${currentHead.weights[index] * 100}%` }} /></i><small>{Math.round(currentHead.weights[index] * 100)}%</small></div>)}</div>
           </div>
         </div>

@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import katex from "katex";
+import { Latex } from "./Latex";
+import { CourseLinks, type CourseLink } from "./CourseLinks";
 
 export type LessonStep = {
   label: string;
@@ -28,6 +29,7 @@ export type LessonPhase = {
 };
 
 export type LessonProps = {
+  relatedCourses?: CourseLink[];
   slug: string;
   code: string;
   label: string;
@@ -51,11 +53,6 @@ const topics = [
   { href: "/reinforcement-learning", label: "强化学习" },
   { href: "/review", label: "进阶 AI 架构" },
 ];
-
-function Formula({ expression }: { expression: string }) {
-  const html = katex.renderToString(expression, { displayMode: true, throwOnError: false, strict: "ignore" });
-  return <div className="math-formula" aria-label={expression} dangerouslySetInnerHTML={{ __html: html }} />;
-}
 
 export default function DeepLesson(props: LessonProps) {
   const [activeStep, setActiveStep] = useState(0);
@@ -119,7 +116,7 @@ export default function DeepLesson(props: LessonProps) {
           <p>“白话解释”帮你建立直觉，“深入一层”告诉你模型实际在优化什么。</p>
         </div>
         <div className="concept-grid">
-          {props.concepts.map((concept, index) => <article key={concept.term} className="concept-card"><div className="concept-number">{String(index + 1).padStart(2, "0")}</div><h3>{concept.term}</h3><p className="concept-plain">{concept.plain}</p><div className="concept-deep"><span>深入一层</span><p>{concept.deep}</p></div>{concept.formula && <Formula expression={concept.formula} />}</article>)}
+          {props.concepts.map((concept, index) => <article key={concept.term} className="concept-card"><div className="concept-number">{String(index + 1).padStart(2, "0")}</div><h3>{concept.term}</h3><p className="concept-plain">{concept.plain}</p><div className="concept-deep"><span>深入一层</span><p>{concept.deep}</p></div>{concept.formula && <Latex expression={concept.formula} block className="math-formula" />}</article>)}
         </div>
       </section>
 
@@ -149,6 +146,7 @@ export default function DeepLesson(props: LessonProps) {
         <div className="faq-list">{props.questions.map((item, index) => <details key={item.question}><summary><span>Q{index + 1}</span>{item.question}<i>＋</i></summary><p>{item.answer}</p></details>)}</div>
       </section>
 
+      {props.relatedCourses && <CourseLinks links={props.relatedCourses} />}
       <section className="next-topics"><span>继续探索</span><h2>把几种架构放在一起看，<br />你会更快抓住它们的差别。</h2><div>{topics.filter((topic) => topic.href !== `/${props.slug}`).map((topic) => <Link key={topic.href} href={topic.href}>{topic.label}<span>→</span></Link>)}</div></section>
       <footer className="lesson-footer"><Link href="/">AI 架构实验室</Link><p>{props.label} 深度可视化教程</p><a href="#top">回到顶部 ↑</a></footer>
     </main>
